@@ -1,0 +1,24 @@
+version: '3.9'
+
+services:
+  postgres:
+    image: postgres:15
+    container_name: tg_bot_postgres
+    environment:
+      POSTGRES_USER: tg_user
+      POSTGRES_PASSWORD: tg_pass
+      POSTGRES_DB: tg_bot_db
+    ports:
+      - "5432:5432"
+    volumes:
+      - pgdata:/var/lib/postgresql/data
+
+  bot:
+    build: .
+    container_name: tg_bot
+    depends_on:
+      - postgres
+    env_file: .env
+
+volumes:
+  pgdata:
